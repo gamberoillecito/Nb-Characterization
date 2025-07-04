@@ -15,7 +15,7 @@
 1. $\rho (T)$ via VDP technique.
   - Iterative solution of the VDP equation from $R_{front}$ and $R_{back}$.
   - Filter data (we can try both methods):
-    - Discard $R_{front}$ and $R_{back}$ that are too different.
+    - Discard high $\Delta$T for $R_{front}$ and $R_{back}$.
     - Discard $R_{front}$ and $R_{back}$ corresponding to high T fluctuation.
   - Plot $\rho (T)$.
     - Merge proper datasets to obtain complete curve from 300k to 2.9k.
