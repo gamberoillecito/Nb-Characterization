@@ -1,0 +1,30 @@
+Column 1: counts from last save
+Column 2: counts from measurement start
+Column 3: time from measurement start during FRONT measurement [seconds]
+Column 4: ignore
+Column 5: ignore
+Column 6: sample temperature during FRONT measurement [Kelvin]
+Column 7: temperature fluctuation during FRONT measurement [Kelvin]
+Column 8: resistance during FRONT measurement [Ohm]                    <-------------------------------------------
+Column 9: average four-wire voltage during FRONT measurement [Volt]
+Column 10: positive four-wire voltage during FRONT measurement [Volt]
+Column 11: negative four-wire voltage during FRONT measurement [Volt]
+Column 12: excitation current during FRONT measurements [Ampere]
+Column 13: two-wire resistance during FRONT measurement [Ohm]
+Column 14: time from measurement start during BACK measurement [seconds]
+Column 15: ignore
+Column 16: ignore
+Column 17: sample temperature during BACK measurement [Kelvin]
+Column 18: temperature fluctuation during BACK measurement [Kelvin]
+Column 19: resistance during BACK measurement [Ohm]                     <-------------------------------------------
+Column 20: average four-wire voltage during BACK measurement [Volt]
+Column 21: positive four-wire voltage during BACK measurement [Volt]
+Column 22: negative four-wire voltage during BACK measurement [Volt]
+Column 23: excitation current during BACK measurements [Ampere]
+Column 24: two-wire resistance during BACK measurement [Ohm]
+Column 25: ignore
+Column 26: ignore
+Column 27: sample temperature during entire measurement cycle [Kelvin]
+Column 28: temperature fluctuation during entire measurement cycle [Kelvin]
+Column 29: sheet resistance from van der Pauw equation [Ohm]
+Column 30: applied magnetic field [Tesla]; ONLY IF MANUALLY RECORDED IN THE CONTROL PROGRAM!

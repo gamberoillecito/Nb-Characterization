@@ -3,15 +3,18 @@ using CairoMakie
 using LsqFit
 using NonlinearSolve
 
+cd(@__DIR__) # Change current working directory to the directory of this script
+
+
 begin
-    f = open("data/heating_8_to_296.dat")
+    f = open("DataSets/heating_8_to_296.dat")
     N = countlines(f);
     seekstart(f);
 
     idxs = Vector{Int32}(undef, N);
 
     front_time = Vector{Float32}(undef, N);         # s
-    front_temp = Vector{Float32}(undef, N);         # K
+    front_temp = Vector{Float32}(undef, N);         # K 
     front_temp_fluct = Vector{Float32}(undef, N);   # K
     front_2WR = Vector{Float32}(undef, N);          # Ohm
 
