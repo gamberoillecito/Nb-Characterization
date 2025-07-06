@@ -14,7 +14,7 @@
 
 ### Resistivity and Mean Free Path
 
-1. $\rho (T)$ via VDP technique.
+1. $\rho (T)$ via VDP technique. MORE DETAILED IN ./R-vs-T/readme.md
     - Iterative solution of the VDP equation from $R_{front}$ and $R_{back}$.
         - Filter data (we can try both methods):
         - Discard high $\Delta$T for $R_{front}$ and $R_{back}$.
