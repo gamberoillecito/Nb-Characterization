@@ -29,10 +29,16 @@ tsmear 0.006 # 6mHa
 
 ## Relaxation
 
-Perform BFGS structural relaxation to optimize ion posision and cell shape/size. We get:
+Perform BFGS structural relaxation to optimize ion position and cell shape/size. We get:
 ```
-acell    5.4191915441E+00  5.4191915441E+00  5.4191915441E+00 Bohr
+acell    5.4192025335E+00  5.4192025335E+00  5.4192025335E+00 Bohr
 rprim   -5.7735026919E-01  5.7735026919E-01  5.7735026919E-01
          5.7735026919E-01 -5.7735026919E-01  5.7735026919E-01
          5.7735026919E-01  5.7735026919E-01 -5.7735026919E-01
 ```
+
+which is equivalent to a lattice constant of:
+
+$$ a = \frac{0.57735026919}{0.5} \times 5.4192025335\ \mathrm{Bohr}  = 0.3311373528013957\ \mathrm{nm}  $$
+
+which differs only slightly from the empirical value of $0.33004\ \mathrm{nm}$
