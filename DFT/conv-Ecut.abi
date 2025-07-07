@@ -10,7 +10,7 @@ natom 1
 typat 1
 xred 0 0 0
 pp_dirpath "../pseudos/PBE-FR"
-scalecart 0.33005 0.33005 0.33005 nm
+acell 0.33005 0.33005 0.33005 nm
 rprim -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
 kptopt 1
 nshiftk 2
