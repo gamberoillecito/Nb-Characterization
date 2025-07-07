@@ -1,0 +1,31 @@
+# Atoms definition
+ntypat 1
+znucl 41
+pseudos "Nb.psp8"
+
+# Common DataSet
+natom 1
+typat 1
+xred 0 0 0
+outdata_prefix "./out/relax"
+pp_dirpath "../pseudos/PBE-FR"
+acell 0.33005 0.33005 0.33005 nm
+rprim -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+kptopt 1
+nshiftk 2
+shiftk 0.25 0.25 0.25 -0.25 -0.25 -0.25
+ngkpt 7 7 7
+toldfe 1e-08
+ecut 42 Ha
+nstep 40
+occopt 4
+nband 10
+tsmear 0.006 Ha
+ionmov 2
+tolmxf 5e-05
+tolmxde 0.0
+dtion 100
+ntime 50
+optcell 2
+ecutsm 0.5 Ha
+dilatmx 1.05
