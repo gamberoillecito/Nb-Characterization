@@ -21,7 +21,7 @@ ecut 15.0 Ha
 nstep 40
 occopt 4
 nband 10
-outdata_prefix "./Ecut/out"
+outdata_prefix "./out/ecut"
 ngkpt 3 3 3
 tsmear 0.05 Ha
 

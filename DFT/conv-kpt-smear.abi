@@ -16,13 +16,13 @@ shiftk 0.25 0.25 0.25 -0.25 -0.25 -0.25
 
 # Calculation params
 toldfe 1e-08
-ecut 40.5 Ha
+ecut 42 Ha
 nstep 40
 occopt 4
 nband 10
 
 # Output
-outdata_prefix "./kpt-smear/final"
+outdata_prefix "./out/kpt-smear"
 output_file "conv-tk.out"
 
 # Suppress some unused outputs
