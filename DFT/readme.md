@@ -10,7 +10,7 @@ mpirun -n 4 abinit conv-Ecut.abi 1> out-Ecut.log 2> err.log
 
 Fitting an exponential we get:
 
-$$ y = \exp(12.1473 - 0.564725x) - 62.28018 \quad [\mathrm{Ha}] $$
+$$ y = \exp(12.23956 - 0.5668441x) - 62.28018 \quad [\mathrm{Ha}] $$
 
 Taking $E_{cut} = 42\ \textrm{Ha}$, we get an error of ca. $9.4\ \mathrm{\mu Ha}$
 
@@ -31,7 +31,7 @@ tsmear 0.006 # 6mHa
 
 Perform BFGS structural relaxation to optimize ion position and cell shape/size. We get:
 ```
-acell    5.4192025335E+00  5.4192025335E+00  5.4192025335E+00 Bohr
+acell    5.4192779505E+00  5.4192779505E+00  5.4192779505E+00 Bohr
 rprim   -5.7735026919E-01  5.7735026919E-01  5.7735026919E-01
          5.7735026919E-01 -5.7735026919E-01  5.7735026919E-01
          5.7735026919E-01  5.7735026919E-01 -5.7735026919E-01
