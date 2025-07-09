@@ -1,0 +1,63 @@
+outdata_prefix "./out/electronic"
+ndtset 3
+
+# Atoms definition
+ntypat 1
+znucl 41
+pseudos "Nb.psp8"
+pp_dirpath "../pseudos/PBE-FR"
+
+# Crystal definition
+natom 1
+typat 1
+xred 0 0 0
+acell    5.4192779505E+00  5.4192779505E+00  5.4192779505E+00 Bohr
+rprim   -5.7735026919E-01  5.7735026919E-01  5.7735026919E-01
+         5.7735026919E-01 -5.7735026919E-01  5.7735026919E-01
+         5.7735026919E-01  5.7735026919E-01 -5.7735026919E-01
+
+# Spin-orbit coupling
+nsppol 1
+nspinor 2
+nspden 1
+
+# Calculation params
+ecut 42 Ha
+nstep 50
+occopt 4
+nband 30
+tsmear 0.006 Ha
+
+# SCF Calculation
+kptopt1 1
+nshiftk1 2
+shiftk1 0.25 0.25 0.25 -0.25 -0.25 -0.25
+ngkpt1 7 7 7
+tolrff1 1e-08
+prtden1 1
+
+# Bands Gamma-H-N-Gamma-P-H
+iscf2 -2
+getden2 1
+tolwfr2 1e-12
+kptopt2 -5
+kptbounds2 
+    0 0 0  
+    -0.5 0.5 0.5  
+    0.0 0.5 0.0  
+    0 0 0  
+    0.25 0.25 0.25  
+    -0.5 0.5 0.5
+ndivsm2 60
+prtebands 2 # print bands as .dat file
+
+# Density of states
+iscf3 -3
+getden3 1
+kptopt3 1
+nshiftk3 1
+shiftk3 0 0 0
+ngkpt3 35 35 35
+tolwfr3 1e-12
+prtdos3 2
+prtfsurf3 1
