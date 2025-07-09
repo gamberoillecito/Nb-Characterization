@@ -42,3 +42,14 @@ which is equivalent to a lattice constant of:
 $$ a = \frac{0.57735026919}{0.5} \times 5.4192025335\ \mathrm{Bohr}  = 0.3311373528013957\ \mathrm{nm}  $$
 
 which differs only slightly from the empirical value of $0.33004\ \mathrm{nm}$
+
+## Electronic properties
+```bash
+mpirun -n 4 abinit electronic.abi 1> electronic.log 2> err.log
+```
+The relevant outputs are:
+- Bands in `out/electronic_DS2_EBANDS.dat`
+- Density of states in `out/electronic_DS3_DOS`
+- Fermi surface in `out/electronic_DS3_BXSF`
+
+![Bands and density of states](./fig/bands.svg)
