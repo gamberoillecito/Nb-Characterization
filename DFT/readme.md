@@ -60,22 +60,19 @@ The relevant outputs are:
 
 ## Phonon properties
 
-1. Create derivative database for response function of phonons
-    ```bash
-    # Inside tmux or equivalent
-    mpirun -n 4 abinit ddb.abi 1> ddb.log 2> err.log
+```bash
+# Inside tmux or equivalent, compute derivative database
+mpirun -n 4 abinit ddb.abi 1> ddb.log 2> err.log
 
-    # To follow iterations on other terminal
-    tail -f ddb.log | grep -E "== DATASET|ITER STEP|Perturbation"
-    ```
-2. Merge all the databases together:
-    ```bash
-    mrgddb < merge-ddb.txt
-    ```
-3. Compute phononic bands and DOS:
-    ```bash
-    anaddb phononic.abi
-    ```
+# To follow iterations on other terminal
+tail -f ddb.log | grep -E "== DATASET|ITER STEP|Perturbation"
+
+# Once finished, merge all the databases together
+mrgddb < merge-ddb.txt
+
+# Finally, compute phononic bands and DOS
+anaddb phononic.abi
+```
 The relevant outputs are:
 - Bands in `out/phononic_PHBANDS.data`
 - Density of states in `out/phononic_PHDOS`

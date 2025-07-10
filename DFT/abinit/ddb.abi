@@ -1,0 +1,69 @@
+outdata_prefix "./out/ddb"
+ndtset 21 # SCF dataset + 20 q-points
+
+# Suppress some unused outputs
+prtebands 0
+prtden 0
+prteig 0
+prtgsr 0
+prtkden 0
+prtwf 0
+prtpot 0 # we don't use POT files for e-ph coupling
+
+# Atoms definition
+ntypat 1
+znucl 41
+pseudos "Nb.psp8"
+pp_dirpath "../pseudos/PBE-FR"
+
+# Crystal definition
+natom 1
+typat 1
+xred 0 0 0
+acell 6.2370411016E+00  6.2370411016E+00  6.2370411016E+00 Bohr
+rprim  -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# Calculation params
+occopt 4
+nband 30
+tsmear 0.006 Ha
+ecut 42.0 Ha
+nstep 50
+
+# Spin-orbit coupling
+nsppol 1
+nspinor 2
+nspden 1
+
+# Common params for phonon stuff
+prtddb 1
+nqpt 1
+rfphon 1
+getwfk 1
+tolvrs 1e-8
+# must use same grid for both k- and q- points
+qptopt 1
+ngqpt 7 7 7
+#shiftq
+#  0.25  0.25  0.25
+# -0.25 -0.25 -0.25
+kptopt 3
+ngkpt 7 7 7
+#nshiftk 2
+#shiftk
+#   0.25  0.25  0.25
+#  -0.25 -0.25 -0.25
+
+# SCF computation
+prtddb1 0
+prtwf1 1
+kptopt1 1
+tolrff1 1e-08
+tolvrs1 0    # use rff -> set vrs to unused
+getwfk1 0    # compute wfk
+nqpt1 0      # no q-points here yet
+rfphon1 0    # don't compute response function to phonons
+
+# Loop through q points
+iqpt: 0
+iqpt+ 1
