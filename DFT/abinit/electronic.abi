@@ -1,6 +1,15 @@
 outdata_prefix "./out/electronic"
 ndtset 3
 
+# Suppress some unused outputs
+prtebands 0
+prtddb 0
+prtden 0
+prteig 0
+prtgsr 0
+prtkden 0
+prtwf 0
+
 # Atoms definition
 ntypat 1
 znucl 41

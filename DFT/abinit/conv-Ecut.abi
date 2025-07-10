@@ -1,6 +1,8 @@
 outdata_prefix "./out/ecut"
 
 # Suppress some unused outputs
+prtebands 0
+prtddb 0
 prtden 0
 prteig 0
 prtgsr 0
