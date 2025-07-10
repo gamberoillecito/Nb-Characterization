@@ -79,3 +79,5 @@ The relevant outputs are:
 The relevant outputs are:
 - Bands in `out/phononic_PHBANDS.data`
 - Density of states in `out/phononic_PHDOS`
+
+![Phonon bands and DOS](./fig/phbands.svg)
