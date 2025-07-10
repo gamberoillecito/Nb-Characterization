@@ -1,0 +1,25 @@
+output_file = "phononic.abo"
+ddb_filepath = "complete-ddb.txt"
+gkk_filepath = "dummy1"
+ddk_filepath = "dummy2"
+eph_prefix = "dummy3"
+
+outdata_prefix "out/phononic"
+
+ifcflag 1
+
+ngqpt 7 7 7
+nqpath 5
+ndivsm 60
+qpath
+   0    0    0     # Gamma
+  -0.5  0.5  0.5   # H
+   0    0.5  0     # N
+   0    0    0     # Gamma
+   0.25 0.25 0.25  # P
+  -0.5  0.5  0.5   # H
+
+prtdos 1
+dossmear 2e-5
+ng2qpt 35 35 35
+q2shft 0 0 0

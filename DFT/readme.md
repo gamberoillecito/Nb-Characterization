@@ -17,7 +17,11 @@ Taking $E_{cut} = 42\ \textrm{Ha}$, we get an error of ca. $9.4\ \mathrm{\mu Ha}
 ## Convergence w.r.t. $k$-points and $t_{smear}$
 
 ```bash
+# Inside tmux or equivalent
 mpirun -n 4 abinit conv-kpt-smear.abi 1> out-kt.log 2> err.log
+
+# To follow iterations on other terminal
+tail -f out-kt.log | grep -E "DATASET|ITER STEP"
 ```
 ![Convergence plot: Etot vs tsmear for different ngkpt](./fig/conv-kpt-smear.svg)
 
@@ -48,8 +52,30 @@ which differs only slightly from the empirical value of $0.33004\ \mathrm{nm}$
 mpirun -n 4 abinit electronic.abi 1> electronic.log 2> err.log
 ```
 The relevant outputs are:
-- Bands in `out/electronic_DS2_EBANDS.dat`
+- Bands in `out/electronic_DS2_EBANDS.data`
 - Density of states in `out/electronic_DS3_DOS`
 - Fermi surface in `out/electronic_DS3_BXSF`
 
 ![Bands and density of states](./fig/bands.svg)
+
+## Phonon properties
+
+1. Create derivative database for response function of phonons
+    ```bash
+    # Inside tmux or equivalent
+    mpirun -n 4 abinit ddb.abi 1> ddb.log 2> err.log
+
+    # To follow iterations on other terminal
+    tail -f ddb.log | grep -E "== DATASET|ITER STEP|Perturbation"
+    ```
+2. Merge all the databases together:
+    ```bash
+    mrgddb < merge-ddb.txt
+    ```
+3. Compute phononic bands and DOS:
+    ```bash
+    anaddb phononic.abi
+    ```
+The relevant outputs are:
+- Bands in `out/phononic_PHBANDS.data`
+- Density of states in `out/phononic_PHDOS`

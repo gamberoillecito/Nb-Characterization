@@ -1,0 +1,23 @@
+complete-ddb.txt
+Al responses of phonons in Nb
+20
+out/ddb_DS2_DDB 
+out/ddb_DS3_DDB 
+out/ddb_DS4_DDB
+out/ddb_DS5_DDB
+out/ddb_DS6_DDB
+out/ddb_DS7_DDB
+out/ddb_DS8_DDB
+out/ddb_DS9_DDB
+out/ddb_DS10_DDB
+out/ddb_DS11_DDB
+out/ddb_DS12_DDB
+out/ddb_DS13_DDB
+out/ddb_DS14_DDB
+out/ddb_DS15_DDB
+out/ddb_DS16_DDB
+out/ddb_DS17_DDB
+out/ddb_DS18_DDB
+out/ddb_DS19_DDB
+out/ddb_DS20_DDB
+out/ddb_DS21_DDB
