@@ -1,5 +1,4 @@
 using Scanf
-using CSV
 using CairoMakie
 update_theme!(theme_latexfonts());
 update_theme!(Theme(fontsize=22));
@@ -10,46 +9,29 @@ bands = Matrix{Float64}(undef, nkpts, nbands)
 Ef = 0.527119
 
 eV_in_Ha = 27.211396641308;
+kpts = 0:(nkpts-1)
 
-begin # load data
+
+begin # load bands
     # Energies are in eV. Zero set to efermi
-    tobeskipped = nkpts + nbands + 33;
-    f = open("./DFT/data/bands.agr", "r");
+    tobeskipped = nkpts + 8;
+    f = open("./DFT/data/ebands.dat", "r");
     for _ ∈ 1:tobeskipped; readline(f); end
-    for b ∈ 1:nbands
-        readline(f) # &
-        readline(f) # @target G0.S0
-        readline(f) # @type xy
-        for k ∈ 1:nkpts
-            _, bands[k,b] = @scanf(readline(f), "%*d %f", Float64);
+    for k ∈ 1:nkpts
+        skipchars(isdigit, f) # skip index of k-point
+        for b ∈ 1:nbands
+            _, bands[k,b] = @scanf(f, " %f", Float64);
         end
+        skipchars(isspace, f) # skip final newline
     end
     close(f)
 end
 
-begin # plot bands
-    x = 0:(nkpts-1)
-    fig = Figure(figure_padding=3)
-    ax = Axis(
-        fig[1,1],
-        ylabel=L"E(k) - E_F",
-        xticks=(
-            [0, 85, 145, 205, 278, 351],
-            ["Γ", "H", "N", "Γ", "P", "H"]
-        )
-    );
-    xlims!(ax, 0, nkpts-1);
-    for b ∈ 9:nbands
-        @views y = bands[:,b];
-        scatter!(ax, x, y, color=:black, markersize=3)
-    end
-    display(fig)
-end
 
-
-begin
+begin # load dos
+    # energies are in Hartree
     Ef = 0.52650654;
-    f = open("./DFT/data/dos.dat", "r");
+    f = open("./DFT/data/edos.dat", "r");
     for _ ∈ 1:14; readline(f); end;
     N = countlines(f)
     seekstart(f);
@@ -63,20 +45,8 @@ begin
     close(f)
 end
 
-begin # plot DOS
-    sel = (N>>1):N;
-    fig = Figure(figure_padding=3);
-    ax = Axis(
-        fig[1,1],
-        xlabel=L"(E - E_F)/\mathrm{eV}",
-        ylabel="Density of states (electrons/eV/cell)"
-    );
-    xlims!(ax, -7, 27);
-    ylims!(ax, 0, nothing)
-    @views lines!(ax, dos[sel,1], dos[sel,2]);
-    display(fig);
-end
 
+dos_sel = (N>>1):N;
 
 begin
     fig = Figure(size=(700, 400), figure_padding=3)
@@ -97,16 +67,29 @@ begin
         ylabelrotation=-0.5π
     );
     xlims!(ax_dos, 0, nothing);
-    ylims!(ax_dos, -7, 27)
+    ylims!(ax_dos, -7, 13)
     linkyaxes!(ax_bands, ax_dos);
 
     for b ∈ 9:nbands
         @views y = bands[:,b];
-        scatter!(ax_bands, x, y, color=:black, markersize=3)
+        scatter!(ax_bands, kpts, y, color=:black, markersize=3)
     end
-    @views lines!(ax_dos, dos[sel,2], dos[sel,1]);
+    @views lines!(ax_dos, dos[dos_sel,2], dos[dos_sel,1]);
 
     display(fig)
 end
 
-save("dft/fig/bands.svg", fig, pt_per_unit=2)
+save("dft/fig/ebands.svg", fig, pt_per_unit=2)
+
+begin # plot DOS only
+    fig = Figure(figure_padding=3);
+    ax = Axis(
+        fig[1,1],
+        xlabel=L"(E - E_F)/\mathrm{eV}",
+        ylabel="Density of states (electrons/eV/cell)"
+    );
+    xlims!(ax, -7, 27);
+    ylims!(ax, 0, nothing)
+    @views lines!(ax, dos[dos_sel,1], dos[dos_sel,2]);
+    display(fig);
+end
