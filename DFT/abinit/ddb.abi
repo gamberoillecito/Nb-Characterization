@@ -36,7 +36,6 @@ nspinor 2
 nspden 1
 
 # Common params for phonon stuff
-prtddb 1
 nqpt 1
 rfphon 1
 getwfk 1
@@ -55,7 +54,6 @@ ngkpt 7 7 7
 #  -0.25 -0.25 -0.25
 
 # SCF computation
-prtddb1 0
 prtwf1 1
 kptopt1 1
 tolrff1 1e-08
