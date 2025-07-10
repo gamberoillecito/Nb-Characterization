@@ -56,7 +56,7 @@ The relevant outputs are:
 - Density of states in `out/electronic_DS3_DOS`
 - Fermi surface in `out/electronic_DS3_BXSF`
 
-![Bands and density of states](./fig/bands.svg)
+![Bands and density of states](./fig/ebands.svg)
 
 ## Phonon properties
 
