@@ -45,6 +45,6 @@ tolmxf 5e-05
 tolmxde 0.0
 dtion 100
 ntime 50
-optcell 2
+optcell 1
 ecutsm 0.5 Ha
 dilatmx 1.05

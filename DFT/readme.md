@@ -33,18 +33,18 @@ tsmear 0.006 # 6mHa
 
 ## Relaxation
 
-Perform BFGS structural relaxation to optimize ion position and cell shape/size. We get:
+```bash
+# Lauch relaxation on tmux or equivalent
+mpirun -n 4 abinit relaxation.abi 1> relaxation.log 2> err.log
+
+# See progress
+tail -f relaxation.log | grep -E "DATASET|ITER STEP"
+
+# Get final lattice constant
+cat relaxation.abo | grep "acell"
 ```
-acell    5.4192779505E+00  5.4192779505E+00  5.4192779505E+00 Bohr
-rprim   -5.7735026919E-01  5.7735026919E-01  5.7735026919E-01
-         5.7735026919E-01 -5.7735026919E-01  5.7735026919E-01
-         5.7735026919E-01  5.7735026919E-01 -5.7735026919E-01
-```
 
-which is equivalent to a lattice constant of:
-
-$$ a = \frac{0.57735026919}{0.5} \times 5.4192025335\ \mathrm{Bohr}  = 0.3311373528013957\ \mathrm{nm}  $$
-
+We perform BFGS structural relaxation to optimize cell size. We get the relaxed lattice constant of $6.2576431670\ \mathrm{Bohr} = 0.33114196111\ \mathrm{nm}$
 which differs only slightly from the empirical value of $0.33004\ \mathrm{nm}$
 
 ## Electronic properties
