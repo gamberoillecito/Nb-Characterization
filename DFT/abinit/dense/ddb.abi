@@ -1,0 +1,100 @@
+outdata_prefix "./out/ddb"
+ndtset 21
+
+#=========================================================================================
+# Common data
+#=========================================================================================
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2370411016  6.2370411016  6.2370411016  Bohr
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid .
+ngkpt       28 28 28        
+kptopt      1
+nshiftk     1
+shiftk      0 0 0       # Use a centered grid 
+
+# Electron states
+ecut        42.0 
+nband       26          # include some empty bands to converge the Fermi surface states well
+occopt      4           # metallic occupation function (Marzari)
+tsmear      0.004       # with a small smearing
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+
+#=========================================================================================
+# General data for all phonon calculations:
+#=========================================================================================
+
+nstep       100
+tolvrs      1e-10       # tolerance on potential residual
+
+rfphon      1           # calculate response function to q-phonon
+rfatpol     1 1         # all atoms are perturbed
+rfdir       1 1 1       # all directions of perturbation = reduced x y z
+
+prepgkk     1           # flag to calculate all perturbations for el-ph calculations
+use_nonscf_gkk 0        # enforce old default and scf-calculate all perturbations
+
+nqpt        1           # 1 q-point at a time
+ngqpt       7 7 7       # q-points grid must be sub-grid of k-point grid
+nshiftq     1
+shiftq      0 0 0       # q-grid must contain the Gamma point
+qptopt      1           # option to use irreducible wedge of q-points 
+
+prtwf       0           # do not print out wavefunction by default (avoid wasting disk usage)
+prteig      0
+prtebands   0
+getden_filepath "./out/gs_DEN"
+getwfk_filepath "./out/gs_WFK"
+
+#=========================================================================================
+# DATASET 1-20 : phonons on a 7x7x7 q-point grid, saving perturbed densities
+#=========================================================================================
+
+iqpt:   1
+iqpt+   1
+
+#iqpt1   1
+#iqpt2   2
+#iqpt3   3
+#iqpt4   4
+#iqpt5   5
+#iqpt6   6
+#iqpt7   7
+#iqpt8   8
+#iqpt9   9
+#iqpt10  10
+#iqpt11  11
+#iqpt12  12
+#iqpt13  13
+#iqpt14  14
+#iqpt15  15
+#iqpt16  16
+#iqpt17  17
+#iqpt18  18
+#iqpt19  19
+#iqpt20  20
+
+
+#=========================================================================================
+#  DATASET 21 : compute DDK matrix elements
+#=========================================================================================
+
+iqpt21      1           # Gamma point (0 0 0)
+rfphon21    0           # no response function to phonons
+rfelfd21    2           # compute response function to electric field
+iscf21     -3           # Need this non-self-consistent option for d/dk 
+tolwfr21    1e-18             

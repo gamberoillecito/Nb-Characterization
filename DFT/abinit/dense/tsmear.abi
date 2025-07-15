@@ -1,0 +1,47 @@
+outdata_prefix "./out/tsmear"
+
+# Suppress some unused outputs
+prtebands   0
+prteig      0
+prtgsr      0
+prtkden     0
+#prtddb     0       # introduced in v9.11.0
+
+
+# Crystal definition
+pp_dirpath "../../pseudos/PBE-FR"
+ntypat      1
+znucl       41
+pseudos    "Nb.psp8"
+natom       1
+typat       1
+xred        0 0 0
+acell       0.33005 0.33005 0.33005 nm
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid (one used for e-ph coupling)
+kptopt      1          # use symmetries
+nshiftk     1
+shiftk      0 0 0      # no shift
+ngkpt       28 28 28   # dense grid
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+# Calculation params
+ecut        42
+toldfe      1e-09
+nstep       100
+nband       16      # 8 core + 2 valence + 6 conduction
+occopt      4
+
+# Loop through cutoff energies with step of 0.5 Ha
+prtden      1       # output the density
+prtwf       1       # output wavefunction and eigenenergies
+getden     -1       # take density from previous run as first guess
+getwfk     -1       # take wavefunction from previous run as first guess
+ndtset      16
+tsmear:     0.05    # must decrease in order to use previous run
+ecut*       0.7943282347242815

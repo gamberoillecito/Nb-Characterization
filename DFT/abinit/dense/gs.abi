@@ -1,0 +1,38 @@
+outdata_prefix "./out/gs"
+nstep       500
+tolwfr      1e-18       # tolerance on wavefunction residual
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2370411016  6.2370411016  6.2370411016  Bohr
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid .
+ngkpt       28 28 28        
+kptopt1     1           # use irreducible BZ to speedup computation
+nshiftk     1
+shiftk      0 0 0       # Use a centered grid 
+
+# Electron states
+ecut        42.0 
+nband       26          # include some empty bands to converge the Fermi surface states well
+occopt      4           # metallic occupation function (Marzari)
+tsmear      0.004       # with a small smearing
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+# Ouput
+prtwf       1           # print wavefunctions
+prtden      1           # print electron density
+prtdos      2           # print density of states as .data file
+prtfsurf    1           # print Fermi surface as k-grid is already dense
+prtebands   0           # don't print bands
