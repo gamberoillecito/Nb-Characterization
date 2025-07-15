@@ -1,0 +1,123 @@
+# Adapted from Abinit tutorial on phonon band structures, thermodynamical properties
+# https://docs_96.abinit.org/tutorial/rf2/
+
+ndtset   22
+
+#=========================================================================================
+# Common input variables
+#=========================================================================================
+
+nstep       50
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2370411016  6.2370411016  6.2370411016  Bohr
+rprim       -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid .
+ngkpt       7 7 7        
+kptopt      3           # full k-point grid by default
+nshiftk     2           # use shifts for BCC lattice
+shiftk      0.25  0.25  0.25   -0.25 -0.25 -0.25
+
+# Electron states
+ecut        40.0 
+nband       26          # include some empty bands to converge the Fermi surface states well
+occopt      4           # metallic occupation function (Marzari)
+tsmear      0.006       # with a small smearing
+
+# Spin-orbit coupling
+nsppol 1
+nspinor 2
+nspden 1
+
+
+#=========================================================================================
+# General data for all phonon calculations:
+#=========================================================================================
+
+tolvrs      1.0d-10     # tolerance on potential residual
+
+rfphon      1           # calculate response function to q-phonon
+rfatpol     1 1         # all atoms are perturbed
+rfdir       1 1 1       # all directions of perturbation = reduced x y z
+
+prepgkk     1           # flag to calculate all perturbations for el-ph calculations
+use_nonscf_gkk 0        # enforce old default and scf-calculate all perturbations
+
+getwfk 1                # take wavefunction from dataset 1
+prtwf 0                 # do not print out wavefunction by default (avoid wasting disk usage)
+
+# generate q-grid
+nqpt        1           # 1 q-point at a time
+ngqpt       7 7 7       # q-points grid must be sub-grid of k-point grid
+qptopt      1           # option to use irreducible wedge of q-points 
+nshiftq     1
+shiftq      0 0 0       # q-grid must contain the Gamma point
+
+
+#=========================================================================================
+# DATASET 1 : Ground state wavefunctions and density
+#=========================================================================================
+
+rfphon1     0           # Cancel default
+nqpt1       0           # Cancel default
+getwfk1     0           # Cancel default
+prtwf1      1           # Output wavefunction for following runs
+kptopt1     1           # Automatic generation of k points, taking into account the symmetry
+tolwfr1     1e-20       # SCF stopping criterion
+
+
+#=========================================================================================
+#  DATASET 2 : Response to d/dk perturbation
+#=========================================================================================
+
+iqpt2       1           # Gamma point
+iscf2      -3           # Need this non-self-consistent option for d/dk
+kptopt2     2           # Use time-reversal symmetry
+rfphon2     0           # No response function to phonons
+rfelfd2     2           # Calculate d/dk wave function only
+tolwfr2     1e-20       # Use wave function residual criterion instead
+
+
+#=========================================================================================
+#  DATASET 3 : Response to of Q=0 phonons and electric field perturbation
+#=========================================================================================
+
+iqpt3       1           # Gamma point
+getddk3     2           # d/dk wave functions from last dataset
+kptopt3     2           # Use time-reversal symmetry
+rfelfd3     3           # Electric-field perturbation response only
+
+
+#=========================================================================================
+# DATASET 4-22 Finite-wave-vector phonon calculations 
+#=========================================================================================
+
+iqpt4       2
+iqpt5       3
+iqpt6       4
+iqpt7       5
+iqpt8       6
+iqpt9       7
+iqpt10      8
+iqpt11      9
+iqpt12      10
+iqpt13      11
+iqpt14      12
+iqpt15      13
+iqpt16      14
+iqpt17      15
+iqpt18      16
+iqpt19      17
+iqpt20      18
+iqpt21      19
+iqpt22      20
+iqpt23      21
+iqpt24      22
