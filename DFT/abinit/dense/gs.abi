@@ -6,7 +6,7 @@ tolwfr      1e-18       # tolerance on wavefunction residual
 ntypat      1
 znucl       41
 pseudos     "Nb.psp8"
-pp_dirpath  "../pseudos/PBE-FR"
+pp_dirpath  "../../pseudos/PBE-FR"
 natom       1
 typat       1
 xred        0 0 0
