@@ -1,0 +1,197 @@
+# Adapted from Abinit tutorial on electron-phonon interactions and superconductivity
+# https://docs_96.abinit.org/tutorial/eph/
+
+outdata_prefix "./out/all"
+ndtset 45
+
+#=========================================================================================
+# Common data for GS and perturbation runs
+#=========================================================================================
+
+tolwfr      1e-18       # tolerance on potential residual
+nstep       200         # last bands don't converge -> max 200 steps
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2582202085  6.2582202085  6.2582202085  Bohr
+rprim       -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid .
+ngkpt       28 28 28        
+kptopt      3           # full k-point grid by default
+nshiftk     1
+shiftk      0 0 0       # Use a centered grid 
+
+# Electron states
+ecut        42.0 Ha
+nband       16          # include some empty bands to converge the Fermi surface states well
+occopt      4           # metallic occupation function (Marzari)
+tsmear      0.004 Ha    # with a small smearing
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+
+#=========================================================================================
+# General data for all phonon calculations:
+#=========================================================================================
+
+rfphon      1           # calculate response function to q-phonon
+rfatpol     1 1         # all atoms are perturbed
+rfdir       1 1 1       # all directions of perturbation = reduced x y z
+
+prepgkk     1           # flag to calculate all perturbations for el-ph calculations
+use_nonscf_gkk 0        # enforce old default and scf-calculate all perturbations
+
+nqpt        1           # 1 q-point at a time
+ngqpt       7 7 7       # q-points grid must be sub-grid of k-point grid
+nshiftq     1
+shiftq      0 0 0       # q-grid must contain the Gamma point
+qptopt      1           # option to use irreducible wedge of q-points 
+
+getwfk      1           # take wavefunction from dataset 1
+prtwf       0           # do not print out wavefunction by default (avoid wasting disk usage)
+prteig      0
+prtebands   0
+
+
+#=========================================================================================
+# DATASET 1 : Compute ground state wavefunctions and density
+#=========================================================================================
+
+rfphon1     0           # no response function to phonons
+nqpt1       0           # no q-points 
+kptopt1     1           # use irreducible BZ to speedup computation
+getwfk1     0           # must compute WF, not consume it
+prtwf1      1           # output GS wavefunctions for the following runs
+prtden1     1
+prteig1     1
+prtdos1     2
+prtfsurf1   1
+
+# take first guess from relaxation step
+getwfk_filepath1 "./out/b16_dfe9_WFK"
+getden_filepath1 "./out/b16_dfe9_DEN"
+
+
+#=========================================================================================
+# DATASET 2 : Electronic bands
+#=========================================================================================
+
+iscf2      -2
+nqpt2       0           # no q-point
+rfphon2     0           # no response function to phonons
+getden2     1           # get density from first dataset
+nstep2      0           # self-consistent set of wavefunctions is already available
+prtebands2  2           # print as .data file
+prteig2     1           # abinit complains if it is 0
+ndivsm2     60          # 60 points in the shortest segment
+kptopt2    -5           # five segments
+kptbounds2
+    0    0    0         # Gamma
+   -0.5  0.5  0.5       # H
+    0    0.5  0         # N
+    0    0    0         # Gamma
+    0.25 0.25 0.25      # P
+   -0.5  0.5  0.5       # H
+
+
+#=========================================================================================
+# DATASET 3-22 : phonons on a 7x7x7 q-point grid, saving perturbed densities
+#=========================================================================================
+
+iqpt3   1     tolvrs3   1e-10
+iqpt4   2     tolvrs4   1e-10
+iqpt5   3     tolvrs5   1e-10
+iqpt6   4     tolvrs6   1e-10
+iqpt7   5     tolvrs7   1e-10
+iqpt8   6     tolvrs8   1e-10
+iqpt9   7     tolvrs9   1e-10
+iqpt10  8     tolvrs10  1e-10
+iqpt11  9     tolvrs11  1e-10
+iqpt12  10    tolvrs12  1e-10
+iqpt13  11    tolvrs13  1e-10
+iqpt14  12    tolvrs14  1e-10
+iqpt15  13    tolvrs15  1e-10
+iqpt16  14    tolvrs16  1e-10
+iqpt17  15    tolvrs17  1e-10
+iqpt18  16    tolvrs18  1e-10
+iqpt19  17    tolvrs19  1e-10
+iqpt20  18    tolvrs20  1e-10
+iqpt21  19    tolvrs21  1e-10
+iqpt22  20    tolvrs22  1e-10
+
+
+#=========================================================================================
+#  DATASET 23 : compute DDK matrix elements
+#=========================================================================================
+
+iqpt23      1           # Gamma point (0 0 0)
+rfphon23    0           # no response function to phonons
+rfelfd23    2           # compute response function to electric field
+prtwf23     0
+iscf23     -3           # Need this non-self-consistent option for d/dk
+
+
+#=========================================================================================
+# DATASET 24 : WF on full BZ 
+#=========================================================================================
+
+getwfk24    1           # take WF from dataset 1 as starting point
+prtwf24     1           # print WF
+nstep24     1
+rfphon24    0           # no response function to phonons
+nqpt24      0           # no q-points
+
+
+#=========================================================================================
+# DATASET 25-44 : Compute the GKK correctly (no gauge problem)
+# - electron-phonon matrix elements are printed out in GKK files
+# - matrix elements only depend on the self-consistent perturbed density (1DEN files)
+# - only a single SCF step is needed, since no self-consistency is required
+# - GKK can therefore be calculated on arbitrarily dense k-point meshes chosen in DS 23
+#=========================================================================================
+
+iqpt25  1     get1den25  3     getwfk25  24    iscf25 -2    nstep25  1    nline25  1    prtgkk25  1
+iqpt26  2     get1den26  4     getwfk26  24    iscf26 -2    nstep26  1    nline26  1    prtgkk26  1
+iqpt27  3     get1den27  5     getwfk27  24    iscf27 -2    nstep27  1    nline27  1    prtgkk27  1
+iqpt28  4     get1den28  6     getwfk28  24    iscf28 -2    nstep28  1    nline28  1    prtgkk28  1
+iqpt29  5     get1den29  7     getwfk29  24    iscf29 -2    nstep29  1    nline29  1    prtgkk29  1
+iqpt30  6     get1den30  8     getwfk30  24    iscf30 -2    nstep30  1    nline30  1    prtgkk30  1
+iqpt31  7     get1den31  9     getwfk31  24    iscf31 -2    nstep31  1    nline31  1    prtgkk31  1
+iqpt32  8     get1den32  10    getwfk32  24    iscf32 -2    nstep32  1    nline32  1    prtgkk32  1
+iqpt33  9     get1den33  11    getwfk33  24    iscf33 -2    nstep33  1    nline33  1    prtgkk33  1
+iqpt34  10    get1den34  12    getwfk34  24    iscf34 -2    nstep34  1    nline34  1    prtgkk34  1
+iqpt35  11    get1den35  13    getwfk35  24    iscf35 -2    nstep35  1    nline35  1    prtgkk35  1
+iqpt36  12    get1den36  14    getwfk36  24    iscf36 -2    nstep36  1    nline36  1    prtgkk36  1
+iqpt37  13    get1den37  15    getwfk37  24    iscf37 -2    nstep37  1    nline37  1    prtgkk37  1
+iqpt38  14    get1den38  16    getwfk38  24    iscf38 -2    nstep38  1    nline38  1    prtgkk38  1
+iqpt39  15    get1den39  17    getwfk39  24    iscf39 -2    nstep39  1    nline39  1    prtgkk39  1
+iqpt40  16    get1den40  18    getwfk40  24    iscf40 -2    nstep40  1    nline40  1    prtgkk40  1
+iqpt41  17    get1den41  19    getwfk41  24    iscf41 -2    nstep41  1    nline41  1    prtgkk41  1
+iqpt42  18    get1den42  20    getwfk42  24    iscf42 -2    nstep42  1    nline42  1    prtgkk42  1
+iqpt43  19    get1den43  21    getwfk43  24    iscf43 -2    nstep43  1    nline43  1    prtgkk43  1
+iqpt44  20    get1den44  22    getwfk44  24    iscf44 -2    nstep44  1    nline44  1    prtgkk44  1
+
+
+#=========================================================================================
+# DATASET 45 : computes DDK matrix elements on the full grid
+#=========================================================================================
+
+rfphon45    0           # no response function to phonons
+rfelfd45    2           # Activate the calculation of the d/dk perturbation
+iqpt45      1           # This is a calculation at the Gamma point
+iscf45     -3           # The d/dk perturbation must be treated non SC-ly
+nstep45     1
+nline45     1
+getwfk45    24
+get1den45   23
+prtgkk45    1
