@@ -15,7 +15,7 @@ rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
 
 # k-point grid .
 ngkpt       28 28 28        
-kptopt1     1           # use irreducible BZ to speedup computation
+kptopt      1           # use irreducible BZ to speedup computation
 nshiftk     1
 shiftk      0 0 0       # Use a centered grid 
 
