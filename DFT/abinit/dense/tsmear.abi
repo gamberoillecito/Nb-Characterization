@@ -44,4 +44,4 @@ getden     -1       # take density from previous run as first guess
 getwfk     -1       # take wavefunction from previous run as first guess
 ndtset      16
 tsmear:     0.05    # must decrease in order to use previous run
-ecut*       0.7943282347242815
+tsmear*       0.7943282347242815
