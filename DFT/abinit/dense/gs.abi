@@ -1,5 +1,5 @@
 outdata_prefix "./out/gs"
-nstep       500
+nstep       200
 tolwfr      1e-18       # tolerance on wavefunction residual
 
 # Crystal structure
