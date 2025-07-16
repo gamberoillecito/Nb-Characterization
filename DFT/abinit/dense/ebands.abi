@@ -1,0 +1,49 @@
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2370411016  6.2370411016  6.2370411016  Bohr
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid
+ngkpt       28 28 28        
+kptopt      1
+nshiftk     1
+shiftk      0 0 0
+
+# Electron states
+ecut        42.0 
+nband       26          # include some empty bands to converge the Fermi surface states well
+occopt      4           # metallic occupation function (Marzari)
+tsmear      0.004       # with a small smearing
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+# k-path
+iscf       -2
+nstep       0           # self-consistent set of wavefunctions is already available
+ndivsm      60          # 60 points in the shortest segment
+kptopt     -5           # five segments
+kptbounds2  
+    0    0    0         # Gamma
+   -0.5  0.5  0.5       # H
+    0    0.5  0         # N
+    0    0    0         # Gamma
+    0.25 0.25 0.25      # P
+   -0.5  0.5  0.5       # H
+
+# IO
+prtwf       0
+prtden      0
+prteig      1           # abinit complains if it is 0
+prtebands   2           # print as .data file
+outdata_prefix  "./out/ebands"
+getden_filepath "./out/gs_DEN"
+getwfk_filepath "./out/gs_WFK"
