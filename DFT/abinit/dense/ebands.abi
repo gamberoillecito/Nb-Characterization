@@ -11,7 +11,7 @@ rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
 
 # Electron states
 ecut        42.0 
-nband       26          # include some empty bands to converge the Fermi surface states well
+nband       20          # include some empty bands to converge the Fermi surface states well
 occopt      4           # metallic occupation function (Marzari)
 tsmear      0.004       # with a small smearing
 
@@ -22,6 +22,7 @@ nspden      1
 
 # k-path
 iscf       -2
+tolwfr      1e-18
 nstep       0           # self-consistent set of wavefunctions is already available
 ndivsm      60          # 60 points in the shortest segment
 kptopt     -5           # five segments
