@@ -9,12 +9,6 @@ xred        0 0 0
 acell       6.2370411016  6.2370411016  6.2370411016  Bohr
 rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
 
-# k-point grid
-ngkpt       28 28 28        
-kptopt      1
-nshiftk     1
-shiftk      0 0 0
-
 # Electron states
 ecut        42.0 
 nband       26          # include some empty bands to converge the Fermi surface states well
