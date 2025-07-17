@@ -34,7 +34,7 @@ nspden      1
 toldfe      1e-08
 ecut        42 Ha
 nstep       40
-occopt      4
+occopt      7
 nband       18
 prtden      1       # output the density
 prtwf       1       # output the wavefunction
@@ -42,7 +42,7 @@ getden     -1       # take density from previous run as first guess
 getwfk     -1       # take wavefunction from previous run as first guess
 
 # Define datasets
-ndtset 160
+ndtset 176
 
 ngkpt1      4 4 4
 tsmear1     0.05
@@ -541,3 +541,54 @@ tsmear159   0.0019905358527674854
 
 ngkpt160    22 22 22
 tsmear160   0.001581138830084189
+
+ngkpt161    24 24 24
+tsmear161   0.05
+getden161   145
+getwfk161   145
+
+ngkpt162    24 24 24
+tsmear162   0.039716411736214076
+
+ngkpt163    24 24 24
+tsmear163   0.031547867224009665
+
+ngkpt164    24 24 24
+tsmear164   0.025059361681363617
+
+ngkpt165    24 24 24
+tsmear165   0.019905358527674864
+
+ngkpt166    24 24 24
+tsmear166   0.015811388300841896
+
+ngkpt167    24 24 24
+tsmear167   0.012559432157547899
+
+ngkpt168    24 24 24
+tsmear168   0.009976311574844396
+
+ngkpt169    24 24 24
+tsmear169   0.007924465962305565
+
+ngkpt170    24 24 24
+tsmear170   0.006294627058970834
+
+ngkpt171    24 24 24
+tsmear171   0.004999999999999998
+
+ngkpt172    24 24 24
+tsmear172   0.003971641173621406
+
+ngkpt173    24 24 24
+tsmear173   0.003154786722400965
+
+ngkpt174    24 24 24
+tsmear174   0.0025059361681363606
+
+ngkpt175    24 24 24
+tsmear175   0.0019905358527674854
+
+ngkpt176    24 24 24
+tsmear176   0.001581138830084189
+
