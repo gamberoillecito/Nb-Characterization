@@ -10,7 +10,6 @@ tolwfr      1e-18
 # Suppress some unused outputs
 prtebands   0
 prtden      0    
-prteig      0
 prtgsr      0
 prtkden     0
 prtwf       0
@@ -50,8 +49,6 @@ tsmear      0.009 Ha
 ngkpt1      18 18 18        
 prtden1     1
 prtwf1      1
-toldfe1     1e-10       # tolwfr alone should not be used as SCF stopping criterion 
-tolwfr1     1e-18       # to cuple tolwfr, we must repeat it here
 
 # get first guess from output of relaxation
 getden_filepath1 "./save/ngk18_dfe8_DEN"
@@ -64,8 +61,8 @@ getwfk_filepath1 "./save/ngk18_dfe8_WFK"
 
 iscf2      -2
 getden2     1
-getwf2      1
-prtebands   2           # print bands as .data file
+getwfk2     1
+prtebands2  2           # print bands as .data file
 ndivsm2     60
 kptopt2    -5
 kptbounds2 
