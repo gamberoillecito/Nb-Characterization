@@ -69,14 +69,14 @@ Moreover, it will allows us to set the $q$-grid equal to $6 \times 6\times 6$ wh
 mpirun -n 4 abinit relax.abi 1> relax.log 2> err.log
 
 # See progress
-tail -f relax.log | grep -E "Iteration|wall_time"
+tail -n +1 -f relax.log | grep -E "Iteration|wall_time"
 
 # Get final lattice constant
 cat relax.log | grep "acell"
 ```
 
-We perform BFGS structural relaxation to optimize cell size. We get the relaxed lattice constant of $6.2582202085\ \mathrm{Bohr} = 0.331172497\ \mathrm{nm}$
-which differs only slightly from the empirical value of $0.33004\ \mathrm{nm}$
+We perform BFGS structural relaxation to optimize cell size. We get the relaxed lattice constant of $6.2599389483\ \mathrm{Bohr} = 331.263449\ \mathrm{pm}$
+which differs only slightly from the empirical value of $330.04\ \mathrm{pm}$
 
 To accelerate the ground state calculation of followinf scripts, we save the resulting wavefunction and density to a `save` folder. 
 ```bash

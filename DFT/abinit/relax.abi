@@ -1,0 +1,49 @@
+outdata_prefix "./out/relax"
+
+# Suppress some unused outputs
+prtebands   0
+prteig      0
+prtgsr      0
+prtkden     0
+prtden      1
+prtwf       1
+
+# Atoms definition
+ntypat      1
+znucl       41
+pseudos "Nb.psp8"
+pp_dirpath "../pseudos/PBE-FR"
+
+# Crystal definition
+natom       1
+typat       1
+xred        0 0 0
+acell       0.33005 0.33005 0.33005 nm
+rprim       -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+kptopt      1
+nshiftk     1
+shiftk      0 0 0
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+# Calculation params
+ngkpt       18 18 18
+toldfe      1e-08
+ecut        42 Ha
+nstep       40
+occopt      4
+nband       20
+tsmear      0.009 Ha
+
+# Relaxation
+ionmov      2
+tolmxf      5e-05
+tolmxde     0.0
+dtion       100
+ntime       50
+optcell     1
+ecutsm      0.5 Ha
+dilatmx     1.05
