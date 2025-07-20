@@ -1,42 +1,45 @@
 outdata_prefix "./out/relax"
 
-# Suppress some unused outputs
+# IO
 prtebands   0
 prteig      0
 prtgsr      0
 prtkden     0
 prtden      1
 prtwf       1
+getwfk     -1           # Initial guess from previous dataset to speed up computation
 
-# Atoms definition
+# Crystal structure
 ntypat      1
 znucl       41
-pseudos "Nb.psp8"
-pp_dirpath "../pseudos/PBE-FR"
-
-# Crystal definition
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
 natom       1
 typat       1
 xred        0 0 0
 acell       0.33005 0.33005 0.33005 nm
 rprim       -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k grid
 kptopt      1
 nshiftk     1
 shiftk      0 0 0
+ngkpt       18 18 18
+
+# electron states
+ecut        42 Ha
+nband       18
+occopt      4
+tsmear      0.009 Ha
 
 # Spin-orbit coupling
 nsppol      1
 nspinor     2
 nspden      1
 
-# Calculation params
-ngkpt       18 18 18
-toldfe      1e-08
-ecut        42 Ha
+# SCF params
+toldff      5e-6        # 10 times smaller than tolmxf
 nstep       40
-occopt      4
-nband       20
-tsmear      0.009 Ha
 
 # Relaxation
 ionmov      2
@@ -44,6 +47,6 @@ tolmxf      5e-05
 tolmxde     0.0
 dtion       100
 ntime       50
-optcell     1
+optcell     1           # optimize only cell volume
 ecutsm      0.5 Ha
 dilatmx     1.05
