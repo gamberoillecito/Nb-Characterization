@@ -75,8 +75,7 @@ tail -n +1 -f relax.log | grep -E "Iteration|wall_time"
 cat relax.log | grep "acell"
 ```
 
-We perform BFGS structural relaxation to optimize cell size. We get the relaxed lattice constant of $6.2599389483\ \mathrm{Bohr} = 331.263449\ \mathrm{pm}$
-which differs only slightly from the empirical value of $330.04\ \mathrm{pm}$
+We perform BFGS structural relaxation to optimize cell size. We get the relaxed lattice constant of $6.2600834178\ \mathrm{Bohr} = 331.271094\ \mathrm{pm}$ which differs only slightly from the empirical value of $330.04\ \mathrm{pm}$
 
 To accelerate the ground state calculation of followinf scripts, we save the resulting wavefunction and density to a `save` folder. 
 ```bash
