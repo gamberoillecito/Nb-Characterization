@@ -1,6 +1,6 @@
-complete-ddb.txt
+save/DDB.txt
 Al responses of phonons in Nb
-17
+16
 out/ddb_DS1_DDB 
 out/ddb_DS2_DDB 
 out/ddb_DS3_DDB 
@@ -17,4 +17,3 @@ out/ddb_DS13_DDB
 out/ddb_DS14_DDB
 out/ddb_DS15_DDB
 out/ddb_DS16_DDB
-out/ddb_DS17_DDK
