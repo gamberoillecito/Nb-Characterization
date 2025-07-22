@@ -98,3 +98,22 @@ begin # plot DOS only
     @views lines!(ax, dos[dos_sel,1], dos[dos_sel,2]);
     display(fig);
 end
+
+
+begin # find electrons per cell at T=0K
+    @views i = findfirst(E -> E > 0, dos[:,1]);
+    E1 = dos[i-1, 1];
+    E2 = dos[i, 1];
+    
+    I1 = dos[i-1, 3];
+    I2 = dos[i, 3];
+
+    m = (I2 - I1)/(E2 - E1);
+    # I2 = m*E2 + q 
+    q = I2 - m*E2;
+    println("N_inf = $q")
+
+    # remove two previous peaks
+    @views i = findfirst(E -> E > -10, dos[:,1])
+    println("N_top = $(q-dos[i,3])")
+end
