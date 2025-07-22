@@ -1,67 +1,83 @@
 outdata_prefix "./out/ddb"
-ndtset 21 # SCF dataset + 20 q-points
+ndtset      17 # 16 q-points + DDK calculation
 
-# Suppress some unused outputs
-prtebands 0
-prtden 0
-prteig 0
-prtgsr 0
-prtkden 0
-prtwf 0
-prtpot 0 # we don't use POT files for e-ph coupling
+# IO
+prtebands   0
+prtden      0
+prteig      0
+prtgsr      0
+prtkden     0
+prtwf       0
+prtpot      0 # we don't use POT files for e-ph coupling
 
-# Atoms definition
-ntypat 1
-znucl 41
-pseudos "Nb.psp8"
-pp_dirpath "../pseudos/PBE-FR"
+getden_filepath "./save/gs_DEN"
+getwfk_filepath "./save/gs_WFK"
 
-# Crystal definition
-natom 1
-typat 1
-xred 0 0 0
-acell 6.2370411016E+00  6.2370411016E+00  6.2370411016E+00 Bohr
-rprim  -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
 
-# Calculation params
-occopt 4
-nband 30
-tsmear 0.006 Ha
-ecut 42.0 Ha
-nstep 50
+#=========================================================================================
+# Common data
+#=========================================================================================
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2600834178  6.2600834178  6.2600834178  Bohr
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid
+kptopt      3           # use whole BZ
+ngkpt       18 18 18
+nshiftk     1
+shiftk      0 0 0       # Use a centered grid 
 
 # Spin-orbit coupling
-nsppol 1
-nspinor 2
-nspden 1
+nsppol      1
+nspinor     2
+nspden      1
 
-# Common params for phonon stuff
-nqpt 1
-rfphon 1
-getwfk 1
-tolvrs 1e-8
-# must use same grid for both k- and q- points
-qptopt 1
-ngqpt 7 7 7
-#shiftq
-#  0.25  0.25  0.25
-# -0.25 -0.25 -0.25
-kptopt 3
-ngkpt 7 7 7
-#nshiftk 2
-#shiftk
-#   0.25  0.25  0.25
-#  -0.25 -0.25 -0.25
+# Electron states
+ecut        42 Ha
+occopt      4
+nband       18
+tsmear      0.009 Ha
 
-# SCF computation
-prtwf1 1
-kptopt1 1
-tolrff1 1e-08
-tolvrs1 0    # use rff -> set vrs to unused
-getwfk1 0    # compute wfk
-nqpt1 0      # no q-points here yet
-rfphon1 0    # don't compute response function to phonons
+#=========================================================================================
+# General data for all phonon calculations:
+#=========================================================================================
 
-# Loop through q points
-iqpt: 0
-iqpt+ 1
+nstep       100
+tolvrs      1e-10       # tolerance on potential residual
+
+rfphon      1           # calculate response function to q-phonon
+rfatpol     1 1         # all atoms are perturbed
+rfdir       1 1 1       # all directions of perturbation = reduced x y z
+
+nqpt        1           # 1 q-point at a time
+qptopt      1           # option to use irreducible wedge of q-points 
+ngqpt       6 6 6       # q-points grid must be sub-grid of k-point grid
+nshiftq     1
+shiftq      0 0 0       # q-grid must contain the Gamma point
+
+
+#=========================================================================================
+# DATASET 1-16 : phonons on a 6x6x6 q-point grid, saving perturbed densities
+#=========================================================================================
+
+iqpt:       1
+iqpt+       1
+
+
+#=========================================================================================
+#  DATASET 17 : compute DDK matrix elements
+#=========================================================================================
+
+iqpt17      1           # Gamma point (0 0 0)
+rfphon17    0           # no response function to phonons
+rfelfd17    2           # equivalent to rfddk 1
+iscf17     -3           # Need this non-self-consistent option for d/dk 
+tolwfr17    1e-18   
