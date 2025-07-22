@@ -3,7 +3,7 @@ using CairoMakie
 update_theme!(theme_latexfonts());
 update_theme!(Theme(fontsize=22));
 
-nbands = 30
+nbands = 18
 nkpts = 352
 bands = Matrix{Float64}(undef, nkpts, nbands)
 Ef = 0.527119
@@ -11,12 +11,17 @@ Ef = 0.527119
 eV_in_Ha = 27.211396641308;
 kpts = 0:(nkpts-1)
 
+function skiplines(io::IO, n::Int) 
+    for _ ∈ 1:n
+        skipchars(c -> c != '\n', io);
+        read(io, Char); # actually skip the newline
+    end
+end
 
 begin # load bands
     # Energies are in eV. Zero set to efermi
-    tobeskipped = nkpts + 8;
     f = open("./DFT/data/ebands.dat", "r");
-    for _ ∈ 1:tobeskipped; readline(f); end
+    skiplines(f, nkpts + 8);
     for k ∈ 1:nkpts
         skipchars(isdigit, f) # skip index of k-point
         for b ∈ 1:nbands
@@ -27,16 +32,16 @@ begin # load bands
     close(f)
 end
 
-
 begin # load dos
     # energies are in Hartree
-    Ef = 0.52650654;
     f = open("./DFT/data/edos.dat", "r");
-    for _ ∈ 1:14; readline(f); end;
+    skiplines(f, 7);
+    _, Ef = @scanf(readline(f), "# Fermi energy :       %f", Float64);
+    skiplines(f, 6);
     N = countlines(f)
     seekstart(f);
+    skiplines(f, 14);
     dos = Matrix{Float64}(undef, N, 3);
-    for _ ∈ 1:14; readline(f); end;
     for (i,line) ∈ enumerate(eachline(f))
         _, E, d, dos[i,3] = @scanf(line, " %f %f %f", Float64, Float64, Float64);
         dos[i,1] = (E - Ef) * eV_in_Ha;
