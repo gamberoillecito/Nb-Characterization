@@ -104,6 +104,13 @@ begin # find electrons per cell at T=0K
     @views i = findfirst(E -> E > 0, dos[:,1]);
     E1 = dos[i-1, 1];
     E2 = dos[i, 1];
+
+    D1 = dos[i-1,2];
+    D2 = dos[i,2];
+
+    m = (D2 - D1)/(E2 - E1);
+    q = D2 - m*E2;
+    println("DOS(Ef) = $q");
     
     I1 = dos[i-1, 3];
     I2 = dos[i, 3];
