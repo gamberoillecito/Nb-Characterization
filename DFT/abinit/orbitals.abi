@@ -1,0 +1,73 @@
+outdata_prefix "./out/orbitals"
+ndtset      3
+nstep       200
+
+# Suppress some unused outputs
+prtebands   0
+prtden      0
+prtgsr      0
+prtkden     0
+prtwf       0
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2600834178  6.2600834178  6.2600834178  Bohr
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+
+# k-point grid
+nshiftk     1
+shiftk      0 0 0       # Use a centered grid
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+# Electron states
+ecut        42 Ha
+occopt      4
+nband       18
+tsmear      0.009 Ha
+
+# Reuse ground state density and wavefunction
+getden_filepath "save/gs_DEN"
+getwfk_filepath "save/gs_WFK"
+
+# Energy cutoff for the double grid
+pawecutdg   80
+
+# Set tolerance for non-SC computation
+tolwfr      1e-18       # match value of SC computation
+
+
+#=========================================================================================
+# DATASET 1 : Fat electronic bands
+#=========================================================================================
+
+iscf1      -2
+pawfatbnd1  1           # print fat bands resolved in L only
+ndivsm1     60
+kptopt1    -5
+kptbounds1
+    0    0    0         # Gamma
+   -0.5  0.5  0.5       # H
+    0    0.5  0         # N
+    0    0    0         # Gamma
+    0.25 0.25 0.25      # P
+   -0.5  0.5  0.5       # H
+
+
+#=========================================================================================
+# DATASET 2 : Fat density of states
+#=========================================================================================
+
+iscf2      -3
+pawprtdos2  1           # print DOS as .data file
+kptopt2     1           # use irreducible BZ
+ngkpt2      36 36 36    # denser k-grid
