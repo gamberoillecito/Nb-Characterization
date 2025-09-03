@@ -1,0 +1,103 @@
+outdata_prefix "./out/Q1"
+ndtset      3
+
+# IO
+prtebands   0
+prteig      0
+prtgsr      0
+prtkden     0
+prtpot      0   # we don't use POT files for e-ph coupling
+
+getden_filepath "./save/gs_DEN"
+getwfk_filepath "./save/gs_WFK"
+
+
+#=========================================================================================
+# Common data
+#=========================================================================================
+
+# Crystal structure
+ntypat      1
+znucl       41
+pseudos     "Nb.psp8"
+pp_dirpath  "../pseudos/PBE-FR"
+natom       1
+typat       1
+xred        0 0 0
+acell       6.2600834178  6.2600834178  6.2600834178  Bohr
+rprim      -0.5 0.5 0.5   0.5 -0.5 0.5   0.5 0.5 -0.5
+brav        2           # tell abinit this is BCC
+
+# k-point grid
+kptopt      3           # full BZ
+ngkpt       12 12 12
+nshiftk     1
+shiftk      0 0 0       # Use a centered grid
+
+# Spin-orbit coupling
+nsppol      1
+nspinor     2
+nspden      1
+
+# Electron states
+ecut        42 Ha
+occopt      4
+nband       18
+tsmear      0.009 Ha
+
+#=========================================================================================
+# General data for all phonon calculations:
+#=========================================================================================
+
+nstep       200
+tolvrs      1e-10       # tolerance on potential residual
+
+rfphon      1           # calculate response function to q-phonon
+rfatpol     1 1         # all atoms are perturbed
+rfdir       1 1 1       # all directions of perturbation = reduced x y z
+
+prepgkk     1           # flag to calculate all perturbations for el-phon calculations
+use_nonscf_gkk 0        # enforce old default and scf-calculate all perturbations
+
+nqpt        1           # 1 q-point at a time
+qptopt      1           # option to use irreducible wedge of q-points
+ngqpt       12 12 12    # q-points grid must be sub-grid of k-point grid
+nshiftq     1
+shiftq      0 0 0       # q-grid must contain the Gamma point
+
+iqpt        1
+
+
+#=========================================================================================
+# DATASET 1 : DDB computation
+#=========================================================================================
+
+prtden1     1           # print 1DEN for GKK & DDK
+prtwf1      1           # print 1WF for GKK & DDK
+
+
+#=========================================================================================
+#  DATASET 2 : GKK computation
+#=========================================================================================
+
+iscf2      -2
+tolwfr2     1.0e-18
+get1den2    1           # get 1DEN from DS1
+get1wf2     1           # get 1WF from DS1
+prtgkk2     1           # print GKK file
+prtwf2      0
+prtden2     0
+
+
+#=========================================================================================
+#  DATASET 2 : DDK computation
+#=========================================================================================
+
+iscf3      -3           # The d/dk perturbation must be treated non SC-ly
+tolwfr3     1.0e-18     # Must use tolwfr for non-self-consistent calculations
+rfphon3     0           # No phonons here
+rfelfd3     2           # Activate the calculation of the d/dk perturbation
+get1den3    1           # get 1DEN from DS1
+get1wf3     1           # get 1WF from DS1
+prtwf3      0
+prtden3     0
