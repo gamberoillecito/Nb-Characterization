@@ -1,0 +1,43 @@
+output_file = "anaddb.abo"
+ddb_filepath = "save/DDB.txt"
+gkk_filepath = "save/GKK.bin"
+ddk_filepath = "ddk_files.txt"
+
+outdata_prefix = "out/ana"
+eph_prefix = "out/eph"
+
+ifcflag         1       # compute and use interatomic force constants
+elphflag        1       # compute electron-phonon coupling
+ifltransport    1       # compute transport properties
+ep_keepbands    1       # eph depends on band (required for transport)
+
+mustar      0.24        # experimental value
+brav        3           # BCC crystal
+
+# q-grid details
+ngqpt       12 12 12
+nqshft      1
+q1shft      0 0 0
+
+# Compute speed of sound
+vs_qrad_tolkms
+    0.1                 # radius of integration sphere
+    0.05                # error tolerance on speed
+
+# Compute ph-bands along same path as e-bands
+prtphbands  2
+nqpath      6
+ndivsm      60
+qpath
+    0    0    0         # Gamma
+   -0.5  0.5  0.5       # H
+    0    0.5  0         # N
+    0    0    0         # Gamma
+    0.25 0.25 0.25      # P
+   -0.5  0.5  0.5       # H
+
+# Compute ph-DOS on finer grid
+prtdos      1
+dossmear    2e-5
+ng2qpt      36 36 36
+q2shft      0 0 0
