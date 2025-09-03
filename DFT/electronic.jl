@@ -4,13 +4,8 @@ using CairoMakie
 update_theme!(theme_latexfonts());
 update_theme!(Theme(fontsize=22));
 
-nbands = 18
-nkpts = 352
-bands = Matrix{Float64}(undef, nkpts, nbands)
 Ef = 0.527119
-
 eV_in_Ha = 27.211396641308;
-kpts = 0:(nkpts-1)
 
 function skiplines(io::IO, n::Int)
     for _ ∈ 1:n
@@ -21,6 +16,10 @@ end
 
 begin # load bands
     # Energies are in eV. Zero set to efermi
+    nbands = 18
+    nkpts = 352
+    kpts = 0:(nkpts-1)
+    bands = Matrix{Float64}(undef, nkpts, nbands)
     f = open("./DFT/data/ebands.dat", "r")
     skiplines(f, nkpts + 8)
     for k ∈ 1:nkpts
@@ -85,7 +84,7 @@ end
 
 begin # load dos
     # energies are in Hartree
-    f = open("./DFT/data/edos.dat", "r")
+    f = open("./DFT/data/edos72.dat", "r")
     skiplines(f, 7)
     _, Ef = @scanf(readline(f), "# Fermi energy :       %f", Float64)
     skiplines(f, 6)
@@ -202,18 +201,27 @@ begin # find electrons per cell at T=0K
     D2 = dos[i, 2]
 
     m = (D2 - D1) / (E2 - E1)
-    q = D2 - m * E2
-    println("DOS(Ef) = $q")
+    DOS = D2 - m * E2
+    println("DOS(Ef) = $DOS electrons/eV/cell")
 
     I1 = dos[i-1, 3]
     I2 = dos[i, 3]
 
     m = (I2 - I1) / (E2 - E1)
     # I2 = m*E2 + q
-    q = I2 - m * E2
-    println("N_inf = $q")
+    Ntot = I2 - m * E2
+    println("N total = $Ntot")
 
     # remove two previous peaks
     @views i = findfirst(E -> E > -10, dos[:, 1])
-    println("N_top = $(q-dos[i,3])")
+    N_valence = Ntot - dos[i, 3]
+    println("N valence = $N_valence electrons")
+
+    a = 3.312693468571951e-10 # m
+    m_e = 9.1093837139e-31 # Kg
+    planck = 6.62607015e-34 # J*s
+    Joule_in_eV = 1.602176634e-19 # J/eV
+    DOS_free = 2 * m_e * a^2 / planck^2 * cbrt(6 * π^2 * N_valence)
+    meff = DOS / (Joule_in_eV * DOS_free)
+    println("Thermodynamic effective mass = $meff mₑ")
 end
