@@ -203,3 +203,39 @@ begin
 
     display(fig)
 end
+
+
+function band_speed(idx_band)
+    X = LinRange(0, 1, nx)
+    Y = LinRange(0, 1, ny)
+    Z = LinRange(0, 1, nz)
+
+    N = length(idx_band)
+    weighted_v = zeros(N)
+
+    for b ∈ 1:N
+        E = bands[idx_band[b]]
+        @views itp = interpolate(E, BSpline(Cubic(Periodic(OnGrid()))))
+        itp = scale(itp, X, Y, Z)
+
+        for i in 1:(nx-1)
+            for j in 1:(ny-1)
+                for k in 1:(nz-1)
+                    v = inv_basis * Interpolations.gradient(itp, X[i], Y[j], Z[k])
+                    weighted_v[b] += v ⋅ v
+                end
+            end
+        end
+    end
+
+    # We don't divide by hbar because our basis matrix
+    # is already the reciprocal basis divided by 2π !!
+
+    v_factor = 1e-10 * joules_in_Hartree / planck # Ha*Ang => m/s
+    weighted_v .*= v_factor^2
+    weighted_v ./= (nx - 1) * (ny - 1) * (nz - 1)
+
+    for b ∈ 1:N
+        print("$(idx_band[b]): $(sqrt(weighted_v[b]))\n")
+    end
+end
