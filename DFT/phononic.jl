@@ -4,13 +4,15 @@ using CairoMakie
 update_theme!(theme_latexfonts());
 update_theme!(Theme(fontsize=22));
 
-nkpts = 351
-bands = Matrix{Float64}(undef, nkpts, 3)
+nkpts = 352
 Ef = 0.527119
 
 eV_in_Ha = 27.211396641308;
 THz_in_meV = 0.2417990504024;
 THz_in_Ha = THz_in_meV * 1e3 * eV_in_Ha;
+K_in_meV = 11.60452500617; # K/meV
+K_in_THz = K_in_meV / THz_in_meV;
+
 
 kpts = 0:(nkpts-1);
 
@@ -21,10 +23,11 @@ function skiplines(io::IO, n::Int)
     end
 end
 
-begin # load bands
+function load_bands(filepath::String)
     # Frequencies are in meV
-    f = open("./DFT/data/phbands.dat", "r")
-    skiplines(f, nkpts + 7)
+    bands = Matrix{Float64}(undef, nkpts, 3)
+    f = open(filepath, "r")
+    skiplines(f, nkpts + 6)
     for k ∈ 1:nkpts
         c, bands[k, 1], bands[k, 2], bands[k, 3] =
             @scanf(f, "%*d %f %f %f \n", Float64, Float64, Float64)
@@ -33,12 +36,14 @@ begin # load bands
         end
     end
     close(f)
+    bands *= THz_in_meV
+    return bands
 end
 
 
-begin # load dos
+function load_dos(filepath::String)
     # energies are in Hartree
-    f = open("./DFT/data/phdos.dat", "r")
+    f = open(filepath, "r")
     skiplines(f, 8)
     N = countlines(f)
     seekstart(f)
@@ -46,11 +51,32 @@ begin # load dos
     skiplines(f, 8)
     for (i, line) ∈ enumerate(eachline(f))
         _, E, d, dos[i, 3] = @scanf(line, " %f %f %f %*f %*f", Float64, Float64, Float64)
-        dos[i, 1] = E * eV_in_Ha * 1e3
+        dos[i, 1] = E * THz_in_Ha
         dos[i, 2] = d / eV_in_Ha * 1e-3
     end
     close(f)
+    return dos
 end
+
+begin # load eph bands
+    # Frequencies are in meV
+    bands_ep = Matrix{Float64}(undef, nkpts, 3)
+    f = open("./DFT/data/phbands_ep.agr", "r")
+    skiplines(f, nkpts + 36)
+    for b ∈ 1:3
+        skiplines(f, 3)
+        for k ∈ 1:nkpts
+            _, bands_ep[k, b] = @scanf(f, "%*d %f \n", Float64)
+        end
+    end
+    close(f)
+end
+
+bands = load_bands("./DFT/data/phbands.dat")
+bands12 = load_bands("./DFT/data/phbands12.dat")
+
+dos = load_dos("./DFT/data/phdos.dat")
+dos12 = load_dos("./DFT/data/phdos12.dat")
 
 begin
     yticks = 0:5:25
@@ -95,13 +121,24 @@ save("dft/fig/phbands.svg", fig, pt_per_unit=2)
 
 begin
     @views d = Dict(
-        "bands" => [
-            bands[:, 1] * THz_in_meV,
-            bands[:, 2] * THz_in_meV,
-            bands[:, 3] * THz_in_meV
-        ],
-        "omega" => dos[:, 1] * THz_in_meV,
-        "dos" => dos[:, 2]
+        "k18_q6" => Dict(
+            "bands" => [
+                bands[:, 1],
+                bands[:, 2],
+                bands[:, 3],
+            ],
+            "omega" => dos[:, 1],
+            "dos" => dos[:, 2]
+        ),
+        "k12_q12" => Dict(
+            "bands" => [
+                bands12[:, 1],
+                bands12[:, 2],
+                bands12[:, 3],
+            ],
+            "omega" => dos12[:, 1],
+            "dos" => dos12[:, 2]
+        ),
     )
     open("DFT/export/phonons.json", "w") do f
         JSON.print(f, d)
