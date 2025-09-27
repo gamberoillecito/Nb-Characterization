@@ -318,3 +318,43 @@ begin #experimental
         JSON.print(f, d)
     end
 end
+
+begin # Debye temperature
+    @views E = dos12[:, 1]
+    @views xx = E .^ 2
+    a = findfirst(v -> v >= 0, E)
+    G = map(50:500) do Δ
+        sel = a:(a+Δ)
+        @views y = dos12[sel, 2]
+        @views A = (xx[sel]\y)[1]
+        @views s = xx[sel] * A
+        y_avg = sum(y) / length(y)
+        R = sum((s .- y) .^ 2) / sum((y .- y_avg) .^ 2)
+        return (A, R)
+    end
+
+    R, i = findmin(g -> g[2], G)
+    println("Min residue ($(R)) with window of $(i + 49)")
+
+    A = G[i][1] # 1/(meV * THz²)
+    b = a + 49 + i
+    sel = a:b
+
+    # x^3 * A/3 = 3
+    # x = cbrt(9/A)
+    theta = cbrt(9 / A * THz_in_meV)
+    sx = LinRange(0, theta, 50)
+    sy = (sx .^ 2) * A
+
+
+    fig = Figure()
+    ax = Axis(fig[1, 1], xlabel="ω/THz", ylabel="DOS (states/meV)")
+    xlims!(ax, 0, nothing)
+    @views lines!(ax, E, dos12[:, 2])
+    lines!(ax, sx, sy)
+    vlines!(ax, [E[b], theta], linestyle=:dash, color=:black)
+    display(fig)
+
+    println("Debye θ = $(theta)THz = $(theta*K_in_THz)K")
+    println("A = $A /(meV * THz^2)")
+end
