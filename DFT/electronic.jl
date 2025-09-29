@@ -225,3 +225,19 @@ begin # find electrons per cell at T=0K
     meff = DOS / (Joule_in_eV * DOS_free)
     println("Thermodynamic effective mass = $meff mₑ")
 end
+
+
+begin # Compute the Fermi energy from the bottom of conduction bands
+    @views conduction = dos[2000:end, :]
+    @views i = findfirst(D -> D > 0, conduction[:, 2])
+
+    E1 = conduction[i, 1]
+    D1 = conduction[i, 2]
+
+    E2 = conduction[i+1, 1]
+    D2 = conduction[i+1, 2]
+
+    m = (E2 - E1) / (D2 - D1)
+    Ef = m * D1 - E1
+    println("Fermi energy: $Ef eV")
+end
